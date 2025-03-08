@@ -11,6 +11,16 @@ export default async function EditTestPage({ params }: EditTestPageProps) {
   
   const test = await prisma.diagnosticTest.findUnique({
     where: { id },
+    select: {
+      id: true,
+      patientName: true,
+      testType: true,
+      result: true,
+      testDate: true,
+      notes: true,  
+      createdAt: true,
+      updatedAt: true
+    }
   })
 
   if (!test) notFound()
