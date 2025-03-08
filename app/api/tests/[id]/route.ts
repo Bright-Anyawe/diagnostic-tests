@@ -4,7 +4,7 @@ import { TestSchema } from "@/app/lib/validations/test"
 
 export async function GET(
   request: Request,
-  { params }: {  params: Record<string, string> }
+  { params }: {  params: { id: string | string[] | number}}
 ) {
   try {
     const test = await prisma.diagnosticTest.findUnique({
