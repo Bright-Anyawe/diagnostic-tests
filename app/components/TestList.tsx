@@ -8,7 +8,7 @@ interface Test {
   testType: string
   result: string
   testDate: Date
-  notes?: string
+  notes?: string | null
 }
 
 interface TestListProps {

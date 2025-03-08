@@ -2,8 +2,19 @@ import Link from "next/link"
 import { prisma } from "@/app/lib/prisma"
 import { TestList } from "@/app/components/TestList"
 
+interface Test {
+  result: string;
+  id: string;
+  patientName: string;
+  testType: string;
+  testDate: Date;
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export default async function Home() {
-  const tests = await prisma.diagnosticTest.findMany({
+  const tests: Test[] = await prisma.diagnosticTest.findMany({
     orderBy: {
       createdAt: "desc",
     },

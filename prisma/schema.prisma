@@ -19,7 +19,7 @@ model DiagnosticTest {
   testType    String
   result      String
   testDate    DateTime
-  notes       String?
+  notes       String? | null
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
    
