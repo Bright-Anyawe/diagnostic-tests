@@ -11,7 +11,7 @@ interface TestFormProps {
     testType: string
     result: string
     testDate: Date
-    notes?: string
+    notes?: string  | null 
   }
   mode: "create" | "edit"
 }
@@ -30,7 +30,7 @@ export function TestForm({ test, mode }: TestFormProps) {
       testType: formData.get("testType") as string,
       result: formData.get("result") as string,
       testDate: formData.get("testDate") as string,
-      notes: formData.get("notes") as string,
+      notes: formData.get("notes") as string  | null ,
     }
 
     try {
@@ -118,7 +118,7 @@ export function TestForm({ test, mode }: TestFormProps) {
         <textarea
           id="notes"
           name="notes"
-          defaultValue={test?.notes}
+          defaultValue={test?.notes || ""}
           className="mt-1 block w-full rounded-md border p-2"
         />
       </div>
