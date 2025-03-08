@@ -3,12 +3,12 @@ import { prisma } from "@/app/lib/prisma";
 import { TestSchema } from "@/app/lib/validations/test";
 
 interface Params {
-  id: string | number;
+  id?: string 
 }
 
 export async function GET(request: Request, { params }: { params: Params }) {
   try {
-    const id = params.id;
+    const  { id } = params as {params: string}
 
     if (!id) {
       return NextResponse.json(
@@ -19,7 +19,7 @@ export async function GET(request: Request, { params }: { params: Params }) {
 
     const test = await prisma.diagnosticTest.findUnique({
       where: {
-        id: params.id,
+        id: id,
       },
     });
 
@@ -42,7 +42,7 @@ export async function GET(request: Request, { params }: { params: Params }) {
 
 export async function PUT(request: Request, { params }: { params: Params }) {
   try {
-    const id = params.id;
+    const { id } = params as { id: string }; 
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -55,7 +55,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
 
     const test = await prisma.diagnosticTest.update({
       where: {
-        id: params.id,
+        id: id,
       },
       data: body,
     });
@@ -72,8 +72,8 @@ export async function PUT(request: Request, { params }: { params: Params }) {
 
 export async function DELETE(request: Request, { params }: { params: Params }) {
   try {
-    const id = params.id;
-    if (!id) {
+    const { id } = params as { id: string }; 
+        if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
         { status: 400 }
@@ -82,7 +82,7 @@ export async function DELETE(request: Request, { params }: { params: Params }) {
 
     await prisma.diagnosticTest.delete({
       where: {
-        id: params.id,
+        id: id,
       },
     });
 
