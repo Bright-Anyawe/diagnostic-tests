@@ -32,7 +32,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: Record<string, string>}
+  { params }: { params: { id: string | string[] | number}}
 ) {
   try {
     const json = await request.json()
@@ -57,7 +57,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: {  params: Record<string, string> }
+  { params }: {  params: { id: string | string[] | number} }
 ) {
   try {
     await prisma.diagnosticTest.delete({
