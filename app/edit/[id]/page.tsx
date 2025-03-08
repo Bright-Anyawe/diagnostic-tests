@@ -3,21 +3,17 @@ import { TestForm } from "../../components/TestForm"
 import { prisma } from "@/app/lib/prisma"
 
 interface EditTestPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
 export default async function EditTestPage({ params }: EditTestPageProps) {
+  const { id } = await params 
+  
   const test = await prisma.diagnosticTest.findUnique({
-    where: {
-      id: params.id,
-    },
+    where: { id },
   })
 
-  if (!test) {
-    notFound()
-  }
+  if (!test) notFound()
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -25,4 +21,4 @@ export default async function EditTestPage({ params }: EditTestPageProps) {
       <TestForm mode="edit" test={test} />
     </main>
   )
-} 
+}
