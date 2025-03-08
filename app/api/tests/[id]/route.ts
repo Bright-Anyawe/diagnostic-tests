@@ -2,14 +2,16 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { TestSchema } from "@/app/lib/validations/test";
 
-interface Params {
-  id?: string 
-}
+type RouteParams = Promise<{ id: string }>;
 
-export async function GET(request: Request, { params }: { params: Params }) {
+export async function GET(
+  request: Request,
+  { params }: { params: RouteParams }
+) {
   try {
-    const  { id } = params as {params: string}
+    const { id } = await params;
 
+    
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -40,9 +42,10 @@ export async function GET(request: Request, { params }: { params: Params }) {
   }
 }
 
-export async function PUT(request: Request, { params }: { params: Params }) {
+export async function PUT(request: Request,   { params }: { params: RouteParams }
+) {
   try {
-    const { id } = params as { id: string }; 
+    const { id } = await params 
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -70,10 +73,11 @@ export async function PUT(request: Request, { params }: { params: Params }) {
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Params }) {
+export async function DELETE(request: Request,   { params }: { params: RouteParams }
+) {
   try {
-    const { id } = params as { id: string }; 
-        if (!id) {
+    const { id } = await params 
+    if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
         { status: 400 }
