@@ -66,7 +66,7 @@ export async function PUT(request: Request,   { params }: { params: RouteParams 
       where: {
         id: id,
       },
-      data: body,
+      data: body
     });
 
     return NextResponse.json(test);
@@ -95,7 +95,7 @@ export async function DELETE(request: Request,   { params }: { params: RoutePara
     await prisma.diagnosticTest.delete({
       where: {
         id: id,
-      },
+      }
     });
 
     return NextResponse.json({ message: "Diagnostic test deleted" });

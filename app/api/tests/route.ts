@@ -7,7 +7,7 @@ export async function GET() {
     const tests = await prisma.diagnosticTest.findMany({
       orderBy: {
         createdAt: "desc",
-      },
+      }
     })
     return NextResponse.json(tests)
   } catch (error) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const body = TestSchema.parse(json)
 
     const test = await prisma.diagnosticTest.create({
-      data: body,
+      data: body
     })
 
     return NextResponse.json(test)
@@ -41,4 +41,4 @@ export async function POST(request: Request) {
   finally {
     if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
-} 
+}
