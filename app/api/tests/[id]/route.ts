@@ -2,15 +2,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { TestSchema } from "@/app/lib/validations/test";
 
-type RouteParams = Promise<{ id: string }>;
+type RouteParams = { id: string };
 
 export async function GET(
   request: Request,
   { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = await params;
-
+    const { id } = params;
 
     if (!id) {
       return NextResponse.json(
@@ -21,12 +20,18 @@ export async function GET(
 
     const test = await prisma.diagnosticTest.findUnique({
       where: {
-        id: id,
+        id: String(id), // Ensure id is a string
       },
       select: {
-        id: true
-      }
+        id: true,
+        patientName: true,
+        testType: true,
+        result: true,
+        testDate: true,
+        notes: true,
+      },
     });
+    
 
     if (!test) {
       return NextResponse.json(
@@ -42,16 +47,14 @@ export async function GET(
       { error: "Failed to fetch diagnostic test" },
       { status: 500 }
     );
-  }  finally {
+  } finally {
     if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }
 
-
-export async function PUT(request: Request,   { params }: { params: RouteParams }
-) {
+export async function PUT(request: Request, { params }: { params: RouteParams }) {
   try {
-    const { id } = await params 
+    const { id } = params;
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -66,25 +69,24 @@ export async function PUT(request: Request,   { params }: { params: RouteParams 
       where: {
         id: id,
       },
-      data: body
+      data: body,
     });
 
     return NextResponse.json(test);
   } catch (error) {
     console.error("Error updating diagnostic test:", error);
     return NextResponse.json(
-      { error: "Failed to update diagnostic test" },
+      { error: error.message || "Failed to update diagnostic test" },
       { status: 500 }
     );
-  }  finally {
+  } finally {
     if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }
 
-export async function DELETE(request: Request,   { params }: { params: RouteParams }
-) {
+export async function DELETE(request: Request, { params }: { params: RouteParams }) {
   try {
-    const { id } = await params 
+    const { id } = params;
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -95,18 +97,17 @@ export async function DELETE(request: Request,   { params }: { params: RoutePara
     await prisma.diagnosticTest.delete({
       where: {
         id: id,
-      }
+      },
     });
 
     return NextResponse.json({ message: "Diagnostic test deleted" });
   } catch (error) {
     console.error("Error deleting diagnostic test:", error);
     return NextResponse.json(
-      { error: "Failed to delete diagnostic test" },
+      { error: error.message || "Failed to delete diagnostic test" },
       { status: 500 }
     );
-  }
-  finally {
+  } finally {
     if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }

@@ -46,14 +46,16 @@ export function TestForm({ test, mode }: TestFormProps) {
         body: JSON.stringify(validatedData),
       })
 
-      if (!response.ok) throw new Error("Failed to save test")
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save test");
+      }
 
       router.refresh()
       router.push("/")
     } catch (error) {
-      console.error("Error:", error)
-      console.error('Submit error:', error);
-
+      console.error("Submit error:", error);
+      alert(`Error: ${error.message}`);
     } finally {
       setLoading(false)
     }
@@ -133,4 +135,4 @@ export function TestForm({ test, mode }: TestFormProps) {
       </button>
     </form>
   )
-} 
+}
