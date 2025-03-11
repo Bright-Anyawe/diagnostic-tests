@@ -39,6 +39,8 @@ export async function GET(
       { error: "Failed to fetch diagnostic test" },
       { status: 500 }
     );
+  }  finally {
+    if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }
 
@@ -70,6 +72,8 @@ export async function PUT(request: Request,   { params }: { params: RouteParams 
       { error: "Failed to update diagnostic test" },
       { status: 500 }
     );
+  }  finally {
+    if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }
 
@@ -97,5 +101,8 @@ export async function DELETE(request: Request,   { params }: { params: RoutePara
       { error: "Failed to delete diagnostic test" },
       { status: 500 }
     );
+  }
+  finally {
+    if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }

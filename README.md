@@ -1,7 +1,7 @@
 ## Diagnostic Test Results Management Application
 
 
-## This project is a simple CRUD application designed to help medical laboratories efficiently manage diagnostic test results. Built with Next.js, TypeScript, Prisma ORM, and Neon PostgreSQL, it provides a user-friendly interface for adding, viewing, editing, and deleting test results.
+This project is a simple CRUD application designed to help medical laboratories efficiently manage diagnostic test results. Built with Next.js, TypeScript, Prisma ORM, and Neon PostgreSQL, it provides a user-friendly interface for adding, viewing, editing, and deleting test results.
 
 ### Features
 
@@ -44,10 +44,10 @@ npx prisma migrate deploy
 - Delete a Test Result: DELETE /api/tests/:id
 - List All Test Results: GET /api/tests
 
-##### Validation
+## Validation
 
 Data validation is implemented using the Zod library to ensure proper data is sent to the endpoints.
 
-###### Deployment
+### Deployment
 The application is deployed on Vercel. You can access it at https://your-app.vercel.app.
 

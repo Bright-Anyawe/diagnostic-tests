@@ -16,6 +16,8 @@ export async function GET() {
       { error: "Failed to fetch diagnostic tests" },
       { status: 500 }
     )
+  }finally {
+    if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 }
 
@@ -35,5 +37,8 @@ export async function POST(request: Request) {
       { error: "Failed to create diagnostic test" },
       { status: 500 }
     )
+  }
+  finally {
+    if (process.env.NODE_ENV === "production") await prisma.$disconnect();
   }
 } 
