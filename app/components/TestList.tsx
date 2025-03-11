@@ -35,11 +35,11 @@ export function TestList({ tests }: TestListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 flex  items-start gap-4">
       {tests.map((test) => (
         <div
           key={test.id}
-          className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+          className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow "
         >
           <div className="flex justify-between items-start">
             <div>

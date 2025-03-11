@@ -52,6 +52,8 @@ export function TestForm({ test, mode }: TestFormProps) {
       router.push("/")
     } catch (error) {
       console.error("Error:", error)
+      console.error('Submit error:', error);
+
     } finally {
       setLoading(false)
     }

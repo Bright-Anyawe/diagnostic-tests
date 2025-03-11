@@ -2,16 +2,15 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { TestSchema } from "@/app/lib/validations/test";
 
-type RouteParams = Promise<{ id: string }>;
-
+type RouteParams = { id: string };
 export async function GET(
   request: Request,
   { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = await params;
+    const { id } =  params;
 
-    
+
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -23,6 +22,9 @@ export async function GET(
       where: {
         id: id,
       },
+      select: {
+        id: true
+      }
     });
 
     if (!test) {
@@ -44,10 +46,11 @@ export async function GET(
   }
 }
 
+
 export async function PUT(request: Request,   { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = await params 
+    const { id } =  params 
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
@@ -80,7 +83,7 @@ export async function PUT(request: Request,   { params }: { params: RouteParams 
 export async function DELETE(request: Request,   { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = await params 
+    const { id } =  params 
     if (!id) {
       return NextResponse.json(
         { error: "Missing diagnostic test ID" },
