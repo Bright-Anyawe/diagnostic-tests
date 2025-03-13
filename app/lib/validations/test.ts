@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const TestSchema = z.object({
   patientName: z.string().min(2, {
@@ -8,6 +8,12 @@ export const TestSchema = z.object({
     message: "Test type must be at least 2 characters.",
   }),
   result: z.string(),
-  testDate: z.string().transform((str) => new Date(str)),
+  testDate: z
+    .string()
+    .refine((str) => !isNaN(Date.parse(str)), {
+      message: "Invalid date format.",
+    })
+    .transform((str) => new Date(str)),
+
   notes: z.string().optional(),
-}) 
+});

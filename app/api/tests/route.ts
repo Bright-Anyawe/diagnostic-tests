@@ -30,9 +30,13 @@ export async function POST(request: Request) {
       data: body
     })
 
+    
+    console.log("Test successfully created")
+
     return NextResponse.json(test)
   } catch (error) {
     console.error("Error creating diagnostic test:", error)
+    console.error("Error details:", error); 
     return NextResponse.json(
       { error: error.message || "Failed to create diagnostic test" },
       { status: 500 }

@@ -20,14 +20,21 @@ export function TestList({ tests }: TestListProps) {
 
   async function deleteTest(id: string) {
     if (!confirm("Are you sure you want to delete this test?")) return
+    console.log("Received  ID:", id);
+
 
     try {
       const response = await fetch(`/api/tests/${id}`, {
         method: "DELETE",
       })
+      const data = await response.json(); 
 
       if (!response.ok) throw new Error("Failed to delete test")
 
+        if (response.status === 404) {
+      alert(data.error || "Failed to delete test");
+          return;
+        }
       router.refresh()
     } catch (error) {
       console.error("Error:", error)
