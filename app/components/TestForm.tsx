@@ -61,82 +61,104 @@ export function TestForm({ test, mode }: TestFormProps) {
     }
   }
 
+  // Add the onCancel function to navigate back to home page
+  function onCancel() {
+    router.push("/");
+  }
+
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="patientName" className="block text-sm font-medium">
-          Patient Name
-        </label>
-        <input
-          type="text"
-          id="patientName"
-          name="patientName"
-          defaultValue={test?.patientName}
-          required
-          className="mt-1 block w-full rounded-md border p-2"
-        />
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+        <h2 className="text-xl font-semibold mb-4">
+          {mode === "create" ? "Create New Test" : "Edit Test"}
+        </h2>
+        
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="patientName" className="block text-sm font-medium">
+              Patient Name
+            </label>
+            <input
+              type="text"
+              id="patientName"
+              name="patientName"
+              defaultValue={test?.patientName}
+              required
+              className="mt-1 block w-full rounded-md border p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="testType" className="block text-sm font-medium">
+              Test Type
+            </label>
+            <input
+              type="text"
+              id="testType"
+              name="testType"
+              defaultValue={test?.testType}
+              required
+              className="mt-1 block w-full rounded-md border p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="result" className="block text-sm font-medium">
+              Result
+            </label>
+            <input
+              type="text"
+              id="result"
+              name="result"
+              defaultValue={test?.result}
+              required
+              className="mt-1 block w-full rounded-md border p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="testDate" className="block text-sm font-medium">
+              Test Date
+            </label>
+            <input
+              type="date"
+              id="testDate"
+              name="testDate"
+              defaultValue={test?.testDate?.toISOString().split("T")[0]}
+              required
+              className="mt-1 block w-full rounded-md border p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="notes" className="block text-sm font-medium">
+              Notes
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              defaultValue={test?.notes || ""}
+              className="mt-1 block w-full rounded-md border p-2"
+            />
+          </div>
+          <div className="flex justify-end space-x-3 pt-2">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:opacity-70"
+            >
+              {loading
+                ? "Saving..."
+                : mode === "create"
+                ? "Create Test"
+                : "Update Test"}
+            </button>
+          </div>
+        </form>
       </div>
-      <div>
-        <label htmlFor="testType" className="block text-sm font-medium">
-          Test Type
-        </label>
-        <input
-          type="text"
-          id="testType"
-          name="testType"
-          defaultValue={test?.testType}
-          required
-          className="mt-1 block w-full rounded-md border p-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="result" className="block text-sm font-medium">
-          Result
-        </label>
-        <input
-          type="text"
-          id="result"
-          name="result"
-          defaultValue={test?.result}
-          required
-          className="mt-1 block w-full rounded-md border p-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="testDate" className="block text-sm font-medium">
-          Test Date
-        </label>
-        <input
-          type="date"
-          id="testDate"
-          name="testDate"
-          defaultValue={test?.testDate.toISOString().split("T")[0]}
-          required
-          className="mt-1 block w-full rounded-md border p-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="notes" className="block text-sm font-medium">
-          Notes
-        </label>
-        <textarea
-          id="notes"
-          name="notes"
-          defaultValue={test?.notes || ""}
-          className="mt-1 block w-full rounded-md border p-2"
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-      >
-        {loading
-          ? "Saving..."
-          : mode === "create"
-          ? "Create Test"
-          : "Update Test"}
-      </button>
-    </form>
+    </div>
   );
 }

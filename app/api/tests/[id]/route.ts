@@ -22,7 +22,7 @@ export async function GET(
 
     const test = await prisma.diagnosticTest.findUnique({
       where: {
-        id: String(id), 
+        id: String(id),
       },
       select: {
         id: true,
@@ -33,7 +33,6 @@ export async function GET(
         notes: true,
       },
     });
-    
 
     if (!test) {
       return NextResponse.json(
@@ -54,11 +53,14 @@ export async function GET(
   }
 }
 
-export async function PUT(request: Request, { params }: { params: RouteParams }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: RouteParams }
+) {
   try {
     const { id } = params;
 
-    if (!id || typeof id !== 'string') {
+    if (!id || typeof id !== "string") {
       return NextResponse.json(
         { error: "Missing or invalid diagnostic test ID" },
         { status: 400 }
@@ -66,7 +68,7 @@ export async function PUT(request: Request, { params }: { params: RouteParams })
     }
 
     const json = await request.json();
-    const body = TestSchema.parse(json); 
+    const body = TestSchema.parse(json);
 
     const test = await prisma.diagnosticTest.update({
       where: { id: id },
@@ -74,35 +76,33 @@ export async function PUT(request: Request, { params }: { params: RouteParams })
     });
 
     return NextResponse.json(test, { status: 200 });
- 
-  } catch (error: any) {//+
+  } catch (error) {
+    //+
     console.error("Error updating diagnostic test:", error);
-//+
-    if (error?.name === 'PrismaClientKnownRequestError' && error?.code === 'P2025') {//+
-      return NextResponse.json(//+
-        { error: "Diagnostic test not found" },//+
-        { status: 404 }//+
-      );//+
-    }//+
-    return NextResponse.json(
-       { error: error?.message || "Failed to update diagnostic test" },//+
-      { status: 500 }//+
-    );
+    //+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json(
+        { error: error?.message || "Failed to update diagnostic test" }, //+
+        { status: 500 } //+
+      );
+    }
   } finally {
     if (process.env.NODE_ENV === "production") {
-      await prisma.$disconnect(); 
+      await prisma.$disconnect();
     }
   }
 }
 
-
-export async function DELETE(request: Request, { params }: { params: RouteParams }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: RouteParams }
+) {
   try {
     const { id } = params;
     console.log("Received DELETE request for ID:", id);
 
     // Validate ID
-    if (!id || typeof id !== 'string') {
+    if (!id || typeof id !== "string") {
       return NextResponse.json(
         { error: "Missing or invalid diagnostic test ID" },
         { status: 400 }
@@ -114,11 +114,14 @@ export async function DELETE(request: Request, { params }: { params: RouteParams
       where: { id: id }, // Use the correct variable name
     });
 
-    return NextResponse.json({ message: "Diagnostic test deleted" }, { status: 200 }); 
+    return NextResponse.json(
+      { message: "Diagnostic test deleted" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting diagnostic test:", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2025') {
+      if (error.code === "P2025") {
         return NextResponse.json(
           { error: "Diagnostic test not found" },
           { status: 404 }

@@ -1,43 +1,42 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 interface Test {
-  id: string
-  patientName: string
-  testType: string
-  result: string
-  testDate: Date
-  notes?: string | null
+  id: string;
+  patientName: string;
+  testType: string;
+  result: string;
+  testDate: Date;
+  notes?: string | null;
 }
 
 interface TestListProps {
-  tests: Test[]
+  tests: Test[];
 }
 
 export function TestList({ tests }: TestListProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   async function deleteTest(id: string) {
-    if (!confirm("Are you sure you want to delete this test?")) return
+    if (!confirm("Are you sure you want to delete this test?")) return;
     console.log("Received  ID:", id);
-
 
     try {
       const response = await fetch(`/api/tests/${id}`, {
         method: "DELETE",
-      })
-      const data = await response.json(); 
+      });
+      const data = await response.json();
 
-      if (!response.ok) throw new Error("Failed to delete test")
+      if (!response.ok) throw new Error("Failed to delete test");
 
-        if (response.status === 404) {
-      alert(data.error || "Failed to delete test");
-          return;
-        }
-      router.refresh()
+      if (response.status === 404) {
+        alert(data.error || "Failed to delete test");
+        return;
+      }
+      router.refresh();
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
     }
   }
 
@@ -78,5 +77,5 @@ export function TestList({ tests }: TestListProps) {
         </div>
       ))}
     </div>
-  )
-} 
+  );
+}
