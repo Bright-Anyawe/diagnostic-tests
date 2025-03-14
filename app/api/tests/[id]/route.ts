@@ -5,12 +5,9 @@ import { Prisma } from "@prisma/client";
 
 type RouteParams = { id: string };
 
-export async function GET(
-  request: Request,
-  { params }: { params: RouteParams }
-) {
+export async function GET(request: Request, context: { params: RouteParams }) {
   try {
-    const { id } = params;
+    const { id } = context.params;
 
     if (!id) {
       return NextResponse.json(
@@ -53,12 +50,9 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: RouteParams }
-) {
+export async function PUT(request: Request, context: { params: RouteParams }) {
   try {
-    const { id } = params;
+    const { id } = context.params;
 
     if (!id || typeof id !== "string") {
       return NextResponse.json(
@@ -95,10 +89,10 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: RouteParams }
+  context: { params: RouteParams }
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     console.log("Received DELETE request for ID:", id);
 
     // Validate ID
