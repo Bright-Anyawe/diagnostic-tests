@@ -3,11 +3,12 @@ import { prisma } from "@/app/lib/prisma";
 import { TestSchema } from "@/app/lib/validations/test";
 import { Prisma } from "@prisma/client";
 
-type RouteParams = { id: string };
 
-export async function GET(request: Request, context: { params: RouteParams }) {
+
+export async function GET(request: Request,   { params }: { params: { id: string } }
+) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     if (!id) {
       return NextResponse.json(
@@ -50,9 +51,9 @@ export async function GET(request: Request, context: { params: RouteParams }) {
   }
 }
 
-export async function PUT(request: Request, context: { params: RouteParams }) {
+export async function PUT(request: Request,   { params }: { params: { id: string } }) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     if (!id || typeof id !== "string") {
       return NextResponse.json(
@@ -89,13 +90,12 @@ export async function PUT(request: Request, context: { params: RouteParams }) {
 
 export async function DELETE(
   request: Request,
-  context: { params: RouteParams }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     console.log("Received DELETE request for ID:", id);
 
-    // Validate ID
     if (!id || typeof id !== "string") {
       return NextResponse.json(
         { error: "Missing or invalid diagnostic test ID" },
